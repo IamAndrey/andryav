@@ -4,7 +4,7 @@
 /public/hot
 /public/storage
 /vendor
-/storage
+/storage/
 .env
 .env.backup
 .env.production
