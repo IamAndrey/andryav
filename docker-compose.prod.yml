@@ -1,0 +1,47 @@
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    container_name: project_nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+      - redis
+    container_name: project_app
+
+  db:
+    platform: linux/x86_64
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ./storage/docker/mysql:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_USER=admin"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_DATABASE=andryav"
+    ports:
+      - 33061:3306
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: project_db
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    container_name: project_redis
+
+
