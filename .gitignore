@@ -4,7 +4,6 @@
 /public/hot
 /public/storage
 /vendor
-/storage/docker
 .env
 .env.backup
 .env.production
@@ -20,3 +19,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/storage/docker
