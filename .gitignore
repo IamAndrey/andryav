@@ -19,4 +19,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-/storage/docker
+/storage/docker/mysql
