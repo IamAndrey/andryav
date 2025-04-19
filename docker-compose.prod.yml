@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/var/www
       - ./_docker/nginx/conf.d:/etc/nginx/conf.d
-      - ./_docker/nginx/ssl:/etc/nginx/ssl
+      - ./_docker/nginx/ssl:/etc/nginx
     ports:
       - 80:80
     depends_on:
