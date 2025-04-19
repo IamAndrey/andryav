@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
-use App\MoonShine\Components\UserProfile;
-use App\MoonShine\Resources\Comment\CommentResource;
-use App\MoonShine\Resources\Project\DraftProjectResource;
-use App\MoonShine\Resources\Project\ModerationProjectResource;
-use MoonShine\MenuManager\MenuGroup;
-use App\MoonShine\Resources\User\UserResource;
+use MoonShine\Laravel\Layouts\AppLayout;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Search};
-use MoonShine\MenuManager\MenuItem;
+use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
 use MoonShine\UI\Components\{Breadcrumbs,
     Components,
     Layout\Flash,
@@ -36,92 +30,20 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\TopBar,
     Layout\Wrapper,
     When};
-use Domain\Project\Models\Project;
-use App\MoonShine\Resources\Project\PublicProjectResource;
-use App\MoonShine\Resources\Project\RejectedProjectResource;
-use App\MoonShine\Resources\Project\DeleteProjectResource;
-use Domain\Comment\Models\ProjectComment;
-use MoonShine\AssetManager\InlineCss;
-use MoonShine\Laravel\Layouts\CompactLayout;
-use App\MoonShine\Resources\Comment\DeleteCommentResource;
-use App\MoonShine\Resources\Project\UnreadProjectResource;
 
-final class MoonShineLayout extends CompactLayout
+final class MoonShineLayout extends AppLayout
 {
     protected function assets(): array
     {
         return [
             ...parent::assets(),
-            InlineCss::make(<<<'Style'
-            :root {
-              --radius: 0.15rem;
-              --radius-sm: 0.075rem;
-              --radius-md: 0.275rem;
-              --radius-lg: 0.3rem;
-              --radius-xl: 0.4rem;
-              --radius-2xl: 0.5rem;
-              --radius-3xl: 1rem;
-              --radius-full: 9999px;
-            }
-        Style),
         ];
     }
 
     protected function menu(): array
     {
         return [
-            MenuItem::make(
-                static fn () => __('moonshine::ui.resource.users'),
-                UserResource::class
-            )->icon('users'),
-            MenuGroup::make(
-                static fn () => __('moonshine::ui.project.title'),
-                [
-                    MenuGroup::make(
-                        static fn () => __('moonshine::ui.projects.title'), [
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.unread_title'),
-                                UnreadProjectResource::class
-                            )->badge(Project::active()->whereNull('read_at')->count()),
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.public_title'),
-                                PublicProjectResource::class
-                            )->badge(Project::active()->whereNotNull('read_at')->count()),
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.moderation_title'),
-                                ModerationProjectResource::class
-                            )->badge(Project::moderation()->count()),
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.drafts_title'),
-                                DraftProjectResource::class
-                            )->badge(Project::drafts()->count()),
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.rejected_title'),
-                                RejectedProjectResource::class
-                            )->badge(Project::rejected()->count()),
-                            MenuItem::make(
-                                static fn () => __('moonshine::ui.projects.deleted_title'),
-                                DeleteProjectResource::class
-                            )->badge(Project::remove()->count())
-                            ],
-                            'book-open'
-                        ),
-                     MenuGroup::make(
-                            static fn () => __('moonshine::ui.resource.comments'),
-                            [
-                                MenuItem::make(static fn () => __('moonshine::ui.comment.public_title'),
-                                CommentResource::class
-                                )
-                                    ->badge(fn () => (string) ProjectComment::query()->count()),
-                                MenuItem::make(static fn () => __('moonshine::ui.comment.deleted_title'),
-                                DeleteCommentResource::class
-                                )
-                                    ->badge(fn () => (string) ProjectComment::query()->whereNotNull('deleted_at')->withTrashed()->count())
-                        ],
-                        'chat-bubble-left'
-                    ),
-                ]
-            )->icon('document'),
+            ...parent::menu(),
         ];
     }
 
@@ -216,10 +138,6 @@ final class MoonShineLayout extends CompactLayout
 
                             Div::make([
                                 Menu::make(),
-                                When::make(
-                                    fn(): bool => $this->isAuthEnabled(),
-                                    static fn(): array => [UserProfile::make(withBorder: true)],
-                                ),
                             ])->customAttributes([
                                 'class' => 'menu',
                                 ':class' => "asideMenuOpen && '_is-opened'",
