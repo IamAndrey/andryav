@@ -15,7 +15,8 @@ class AddHeaders
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->headers->set('X-CSRF-TOKEN', 'Hello World');
+        $request->cookie('World', 'Hello World');
+        dd($request);
         return $next($request);
     }
 }
