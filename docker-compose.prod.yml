@@ -9,6 +9,7 @@ services:
     image: nginx:latest
     volumes:
       - ./:/var/www
+      - ./_docker/nginx/ssl:/etc/ssl
       - ./_docker/nginx/conf.d:/etc/nginx/conf.d
     ports:
       - 80:80
