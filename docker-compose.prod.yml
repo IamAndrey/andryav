@@ -13,6 +13,7 @@ services:
       - ./_docker/nginx/conf.d:/etc/nginx/conf.d
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - app
     container_name: project_nginx
