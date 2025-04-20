@@ -15,10 +15,7 @@ class AddHeaders
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $response = $next($request);
-        $response->header('header name', 'header value');
-        $response->header('another header', 'another value');
-
-        return $response;
+        $request->headers->set('X-CSRF-TOKEN', 'Hello World');
+        return $next($request);
     }
 }
