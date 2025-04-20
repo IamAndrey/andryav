@@ -182,6 +182,9 @@ final class MoonShineLayout extends AppLayout
                     ]),
                 ])->class('theme-minimalistic'),
             ])
+                ->withCookies([
+                    'XSRF-TOKEN' => csrf_token()
+                ])
                 ->customAttributes([
                     'lang' => $this->getHeadLang(),
                 ])
