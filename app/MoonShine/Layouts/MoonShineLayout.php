@@ -104,8 +104,8 @@ final class MoonShineLayout extends AppLayout
             Html::make([
                 Head::make([
                     Meta::make()->customAttributes([
-                        'name' => 'csrf-token',
-                        'content' => csrf_token()
+                        //'name' => 'csrf-token',
+                        //'content' => csrf_token()
                     ]),
                     Favicon::make()->bodyColor($this->getColorManager()->get('body')),
                     Assets::make(),
