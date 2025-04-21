@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Middleware\AddHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Spatie\CookieConsent\CookieConsentMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(AddHeaders::class);
+        $middleware->append(CookieConsentMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
