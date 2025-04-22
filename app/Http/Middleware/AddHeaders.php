@@ -15,9 +15,6 @@ class AddHeaders
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $request->cookie('World', 'Hello World');
-        $response = $next($request);
-        //dd($request);
-        return $response;
+        return $next($request);;
     }
 }
