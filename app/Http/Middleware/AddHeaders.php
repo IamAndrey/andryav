@@ -17,7 +17,7 @@ class AddHeaders
     {
         $request->cookie('World', 'Hello World');
         $response = $next($request);
-        dd($request);
+        //dd($request);
         return $response;
     }
 }
